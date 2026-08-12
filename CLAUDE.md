@@ -10,29 +10,48 @@ npm run dev        # start dev server at http://localhost:3000
 npm run build      # production build
 npm run start       # serve production build
 npm run lint       # next lint
+npm run typecheck  # tsc --noEmit
 ```
 
 There is no test suite configured in this repo.
 
 ## Project overview
 
-Mobile-first Next.js 14 (App Router) + Tailwind landing page for "Don Toto DA+", a supermarket, built to drive Instagram/Facebook Ads traffic. Content and UI copy are in Spanish. There are only two routes:
+Mobile-first Next.js 14 (App Router) + Tailwind landing/catalog site for "Don Toto DA+", a supermarket, built to drive Instagram/Facebook Ads traffic. Content and UI copy are in Spanish. There is no state management, API layer, backend, or persistence — everything reads from a static mock catalog in `lib/catalogo.ts`.
 
-- `app/page.tsx` — the main landing page: header, hero banner, category grid, horizontal "favoritos" chip scroller, promo banner, image gallery, benefits grid, final dual CTA (web store vs. app download), and footer. All sections are inlined in this single file with their data as local arrays at the top (`gondolas`, `categorias`, `favoritos`, `beneficios`) — there are no shared components yet.
+### Routes
+
+- `app/page.tsx` — the home page: `SiteHeader`, `Hero`, a category grid (data-driven from `lib/catalogo.ts`, one `CategoryCard` per category plus a `PromoCard`), a "Liquidación del día" product grid (`ProductCard`, hand-picked IDs via `LIQUIDACION_IDS`), `ImperdiblesSemanales`, `RetiraGratisBanner`, `MiClubStrip`, `BeneficiosAdicionales`, `ValuePropsStrip`, a final dual CTA (web store vs. app download), and an inline footer.
+- `app/categoria/[nombre]/page.tsx` — dynamic category page (statically generated via `generateStaticParams` from `categorias`). Server component renders `SiteHeader`, breadcrumb, and a category-switcher chip row, then hands product data to `categoria-client.tsx`.
+- `app/categoria/[nombre]/categoria-client.tsx` — client component: sidebar filters (max-price range slider + brand checkboxes, collapsible on mobile) over the category's products, no cart/checkout yet.
 - `app/tienda/page.tsx` — placeholder for the real store/checkout flow. Intentionally not implemented; the real catalog/purchase system is meant to be built here later (see README "Próximos pasos").
-- `app/layout.tsx` — root layout, global metadata (title/description used for SEO/social), loads the Inter font, applies base `bg-white text-brand-dark`.
+- `app/layout.tsx` — root layout, global metadata (title/description used for SEO/social), loads fonts, applies base `bg-brand-cream font-sans text-brand-dark`.
 
-There is no state management, API layer, backend, or data fetching — everything is static JSX.
+### Data layer (`lib/`)
+
+- `lib/catalogo.ts` — mock catalog, meant to be swapped for a real API/CMS later. Exports `categorias` (5 categories with slug/nombre/emoji/color/imagen) and `productos` (id/categoria/nombre/marca/precio/precioAntes?/unidad/emoji/imagen?), plus helpers `getCategoria`, `getProductosPorCategoria`, `getPrecioDesde`, `getProducto`, and `CATEGORIA_COLOR_CLASSES` (maps each category's `ColorMarca` to Tailwind bg/soft/text classes so components don't repeat conditional strings).
+- `lib/format.ts` — `formatoPeso` price formatting helper.
+
+### Components (`components/`)
+
+Extracted out of the former single-file `app/page.tsx` — home page sections and shared UI are now componentized:
+
+- `SiteHeader`, `CategoriesMenu` (dropdown mega-menu, client component), `Logo` (hand-built SVG recreation of the brand mockup — `DonTotoLogo` / `CartMark`), `icons.tsx` (shared outline-icon set matching the brand manual's iconography)
+- `Hero` (client component, rotating offer banner)
+- `CategoryCard` / `PromoCard`, `ProductCard`, `DiscountBadge` (dashed-circle "seal" badge, not a flat corner ribbon)
+- `ImperdiblesSemanales`, `RetiraGratisBanner`, `MiClubStrip`, `BeneficiosAdicionales`, `ValuePropsStrip` — home page marketing sections, each mapped from small local data arrays
 
 ## Styling / branding
 
-- Brand colors are defined in `tailwind.config.js` under the `brand` key: `brand.orange` (#F07E26), `brand.blue` (#004AAD), `brand.navy` (#0D2B63), `brand.dark` (#022353). Use these tokens (`text-brand-navy`, `bg-brand-orange`, etc.) instead of arbitrary hex values to stay consistent with the brand manual.
-- Font is Inter, loaded via `next/font/google` in `app/layout.tsx` and also set as the Tailwind `sans` default.
-- Design language mimics Chilean supermarket apps (e.g. Lider.cl): sticky header, category icon grid, horizontal scroll chip row, image gallery bento grid, dual-CTA final section.
+- Brand colors are defined in `tailwind.config.js` under the `brand` key: `brand.orange` (#F07E26), `brand.orangeDark` (#D9650F, hover/pressed state), `brand.blue` (#004AAD), `brand.navy` (#0D2B63), `brand.dark` (#022353), `brand.cream` (#FFF7EC, warm background replacing flat white), and `brand.pink` (#E14F82, extended accent for "Mi Club"/loyalty pieces — not in the official brand manual). Use these tokens (`text-brand-navy`, `bg-brand-orange`, etc.) instead of arbitrary hex values.
+- Fonts: **Archivo** (UI text, labels, small prices) and **Bricolage Grotesque** (headlines, big prices), both loaded via `next/font/google` in `app/layout.tsx` as CSS vars (`--font-archivo`, `--font-bricolage`) and wired into Tailwind as `font-sans` / `font-display` respectively. (Inter is no longer used.)
+- Custom Tailwind extensions worth knowing about: `shadow-tag`/`shadow-tagSm` (solid-offset "sticker" shadow instead of blurry `shadow-md`), `shadow-card`, `bg-dot-grid` + `bg-dots` (dotted background pattern used on navy/orange sections), `animate-float`/`float-delayed`/`fade-up` keyframes.
+- Design language mimics Chilean/Argentine supermarket apps (e.g. Lider.cl): sticky header with mega-menu, category grid with "Desde $X" pricing, horizontal chip rows, dual-CTA final section, dedicated category+filters pages.
 
 ## Known placeholders to be aware of
 
-- Gallery images in `app/page.tsx` (`gondolas` array) currently point to Unsplash URLs — real photos are meant to replace them (Unsplash remote images are allowlisted in `next.config.js` under `images.remotePatterns`).
-- The "Descargar App" link in `app/page.tsx` is a dead `href="#"` pending the real App Store/Google Play URL.
-- `app/tienda/page.tsx` has no real catalog/checkout logic yet.
+- `productos`/`categorias` in `lib/catalogo.ts` are mock data (Unsplash stock photos for the few products/categories that have `imagen`, invented prices/brands) — meant to be replaced by a real API/CMS. Unsplash remote images are allowlisted in `next.config.js` under `images.remotePatterns`.
+- `app/categoria/[nombre]/categoria-client.tsx` has filtering (price + brand) but no cart, sorting, or checkout logic yet.
+- The "Descargar App" link in `app/page.tsx` is a dead `href="#"` pending the real App Store/Google Play URL. Several footer links (`Centro de ayuda`, `Envíos`, `WhatsApp`, social links) are also dead `href="#"` placeholders.
+- `app/tienda/page.tsx` has no real catalog/checkout logic yet — this is where the real ordering system is meant to be built.
 - Long-term plan (per README): once the web ordering system is built at `/tienda`, wrap it with Capacitor to ship a native app without duplicating code.

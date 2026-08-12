@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: #f07e26;
+  color: #fff;
+}
+
+/* Oculta la scrollbar del carrusel horizontal sin perder el scroll nativo */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Patrón de marca — carritos DT repetidos en diagonal (manual de marca,
+   sección "patrón de marca"). Tile de 84px con el glifo pre-rotado -18°,
+   pensado como textura sutil sobre fondos navy. */
+@keyframes hero-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.pattern-carritos {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='84'%20height='84'%20viewBox='0%200%2084%2084'%3E%3Cg%20transform='rotate(-18%2042%2042)'%20fill='%23ffffff'%20fill-opacity='0.07'%3E%3Cpolygon%20points='12,10%2022,10%2036,26%2026,26'/%3E%3Cpolygon%20points='26,26%2062,26%2056,54%2032,54'/%3E%3Ccircle%20cx='37'%20cy='63'%20r='4'/%3E%3Ccircle%20cx='55'%20cy='63'%20r='4'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 84px 84px;
+}

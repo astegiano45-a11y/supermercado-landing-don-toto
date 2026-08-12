@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CartIcon, SearchIcon, UserIcon } from "./icons";
 import { DonTotoLogo } from "./Logo";
 import CategoriesMenu from "./CategoriesMenu";
+import QuickListModal from "./QuickListModal";
 
 export default function SiteHeader() {
   return (
@@ -27,6 +28,7 @@ export default function SiteHeader() {
           </div>
 
           <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+            <QuickListModal />
             <button
               type="button"
               aria-label="Mi cuenta"

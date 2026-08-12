@@ -47,6 +47,44 @@ export function PlusIcon({ className = "h-4 w-4" }: { className?: string }) {
   );
 }
 
+export function MinusIcon({ className = "h-4 w-4" }: { className?: string }) {
+  return (
+    <svg {...base} strokeWidth={2.2} className={className} aria-hidden="true">
+      <path d="M5 12h14" />
+    </svg>
+  );
+}
+
+export function CloseIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg {...base} strokeWidth={2} className={className} aria-hidden="true">
+      <path d="M6 6l12 12M18 6 6 18" />
+    </svg>
+  );
+}
+
+export function ListIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M9.5 6h10M9.5 12h10M9.5 18h10" />
+      <path d="m4 6.2 1 1L6.8 5" />
+      <path d="m4 12.2 1 1 1.8-2.2" />
+      <path d="m4 18.2 1 1 1.8-2.2" />
+    </svg>
+  );
+}
+
+export function TrashIcon({ className = "h-5 w-5" }: { className?: string }) {
+  return (
+    <svg {...base} className={className} aria-hidden="true">
+      <path d="M4.5 7h15" />
+      <path d="M9 7V5.2A1.2 1.2 0 0 1 10.2 4h3.6A1.2 1.2 0 0 1 15 5.2V7" />
+      <path d="M6.5 7 7.3 19a2 2 0 0 0 2 1.9h5.4a2 2 0 0 0 2-1.9L17.5 7" />
+      <path d="M10 11v6M14 11v6" />
+    </svg>
+  );
+}
+
 export function PlayIcon({ className = "h-3.5 w-3.5" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">

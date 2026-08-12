@@ -44,7 +44,13 @@
       "Bash(npm init *)",
       "Bash(node split.js)",
       "Bash(git init *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git remote *)",
+      "Bash(git branch *)",
+      "Bash(git push *)",
+      "Bash(node -e \"const icons = require\\('lucide-react'\\); const names = Object.keys\\(icons\\).filter\\(k => /Wallet|Coin|Cart|Card|User|Star|Gift|Percent|Smartphone|Sparkle|Badge|Crown|Ticket/i.test\\(k\\)\\); console.log\\(names.join\\('\\\\n'\\)\\)\")",
+      "Bash(node -e \"const m = require\\('lucide-react'\\); console.log\\(typeof m.CreditCard, typeof m.UserRound, typeof m.ShoppingCart, typeof m.Coins, typeof m.WalletMinimal, typeof m.Smartphone, typeof m.Gift, typeof m.Star\\)\")",
+      "Bash(node -e ' *)"
     ]
   }
 }

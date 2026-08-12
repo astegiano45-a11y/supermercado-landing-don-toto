@@ -74,43 +74,6 @@ export function PickupIcon({ className = "h-6 w-6" }: { className?: string }) {
   );
 }
 
-export function StarIcon({ className = "h-6 w-6" }: { className?: string }) {
-  return (
-    <svg {...base} className={className} aria-hidden="true">
-      <path d="m12 3.6 2.4 5.1 5.5.7-4 3.9.95 5.5L12 16.2l-4.85 2.6.95-5.5-4-3.9 5.5-.7L12 3.6Z" />
-    </svg>
-  );
-}
-
-export function ReceiptIcon({ className = "h-6 w-6" }: { className?: string }) {
-  return (
-    <svg {...base} className={className} aria-hidden="true">
-      <path d="M6 3.2h12v17.6l-2.4-1.6-2.1 1.6-2.1-1.6-2.1 1.6-2.1-1.6L6 20.8V3.2Z" />
-      <path d="M8.6 8h6.8M8.6 11.8h6.8M8.6 15.6h4.2" />
-    </svg>
-  );
-}
-
-export function CardIcon({ className = "h-6 w-6" }: { className?: string }) {
-  return (
-    <svg {...base} className={className} aria-hidden="true">
-      <rect x="2.6" y="5.4" width="18.8" height="13.2" rx="2.1" />
-      <path d="M2.6 9.6h18.8" />
-      <path d="M6 14.6h4" />
-    </svg>
-  );
-}
-
-export function GiftIcon({ className = "h-6 w-6" }: { className?: string }) {
-  return (
-    <svg {...base} className={className} aria-hidden="true">
-      <rect x="3.4" y="9.4" width="17.2" height="4.2" rx="0.8" />
-      <path d="M4.8 13.6v6.6a1.4 1.4 0 0 0 1.4 1.4h11.6a1.4 1.4 0 0 0 1.4-1.4v-6.6M12 9.4v12.2" />
-      <path d="M12 9.4C10.8 6 7.6 4.9 6.4 6.3c-1.1 1.3.2 3.1 5.6 3.1ZM12 9.4c1.2-3.4 4.4-4.5 5.6-3.1 1.1 1.3-.2 3.1-5.6 3.1Z" />
-    </svg>
-  );
-}
-
 export function GridIcon({ className = "h-5 w-5" }: { className?: string }) {
   return (
     <svg {...base} className={className} aria-hidden="true">

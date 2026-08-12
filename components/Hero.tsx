@@ -132,7 +132,23 @@ export default function Hero() {
       role="region"
       aria-label="Carrusel de ofertas destacadas"
     >
-      <div className="relative aspect-[4/5] w-full sm:aspect-[16/9] lg:aspect-[21/9]">
+      <div
+        className={`relative w-full ${
+          // el banner de bienvenida es panorámico (2087×753 ≈ 2.77:1) y lleva
+          // el wordmark "DON TOTO DA+" + tagline pegados al borde izquierdo,
+          // ocupando ~48% del ancho de la imagen. El recorte 4:5 de mobile
+          // (~29% del ancho visible) es más angosto que el propio texto: no
+          // hay object-position que lo muestre entero ahí. Se le da a este
+          // slide un aspecto más panorámico (16:9 en todos los breakpoints,
+          // en vez de 4:5 en mobile) para que el recorte sea lo bastante
+          // ancho como para no cortar el wordmark — a costa de una franja de
+          // hero más baja en mobile mientras dura este slide. Los demás
+          // slides no se tocan.
+          slide.variant === "bienvenida"
+            ? "aspect-[16/9]"
+            : "aspect-[4/5] sm:aspect-[16/9] lg:aspect-[21/9]"
+        }`}
+      >
         {SLIDES.map((s, i) => (
           <Image
             key={s.id}
@@ -141,16 +157,11 @@ export default function Hero() {
             fill
             priority={i === 0}
             className={`object-cover transition-opacity duration-700 ease-out ${
-              // el banner de bienvenida es panorámico (2087×753) — en los recortes
-              // más angostos (mobile 4:5 ≈29% del ancho visible, sm 16:9 ≈64%) el
-              // centro cae en el hueco vacío entre el wordmark y la foto, o corta
-              // el wordmark a la mitad. Se corre el foco hacia la derecha para
-              // priorizar a Don Toto; en lg (21:9 ≈84% visible) ya entra casi
-              // todo el banner, así que ahí va centrado. Los demás slides quedan
-              // en object-center siempre.
-              s.variant === "bienvenida"
-                ? "object-[75%_center] sm:object-[68%_center] lg:object-center"
-                : "object-center"
+              // foco a la izquierda siempre — ahí vive el wordmark+tagline.
+              // Se prioriza el texto completo aunque la foto del carnicero
+              // quede más recortada/corrida hacia afuera por la derecha.
+              // Los demás slides quedan en object-center siempre.
+              s.variant === "bienvenida" ? "object-left" : "object-center"
             } ${i === index ? "opacity-100" : "opacity-0"}`}
           />
         ))}

@@ -1,6 +1,12 @@
 // Recreación en SVG del logo del manual de marca (carrito + wordmark).
 // El manual entrega un mockup rasterizado, no un asset vectorial exportado,
 // así que se reconstruye acá con los mismos colores exactos (#0D2B63 / #F07E26).
+//
+// El header usa el ícono oficial (public/imagenes/dt-icon-oficial.png) vía
+// icon="official" — el resto de los usos (footer, Hero, ValuePropsStrip)
+// siguen con el SVG porque necesitan la variante "reversed" (blanca) sobre
+// fondos navy/naranja, y el PNG oficial es un color fijo.
+import Image from "next/image";
 
 export function CartMark({
   className = "h-8 w-8",
@@ -32,11 +38,13 @@ export function DonTotoLogo({
   textClassName = "text-xl",
   stacked = false,
   reversed = false,
+  icon = "svg",
 }: {
   markClassName?: string;
   textClassName?: string;
   stacked?: boolean;
   reversed?: boolean;
+  icon?: "svg" | "official";
 }) {
   return (
     <span
@@ -44,7 +52,18 @@ export function DonTotoLogo({
         stacked ? "flex-col text-center" : "flex-row"
       }`}
     >
-      <CartMark className={markClassName} reversed={reversed} />
+      {icon === "official" ? (
+        <Image
+          src="/imagenes/dt-icon-oficial.png"
+          alt="Don Toto DA+"
+          width={580}
+          height={415}
+          priority
+          className={`${markClassName} object-contain`}
+        />
+      ) : (
+        <CartMark className={markClassName} reversed={reversed} />
+      )}
       <span
         className={`font-display font-extrabold leading-none ${textClassName} ${
           reversed ? "text-white" : "text-brand-navy"

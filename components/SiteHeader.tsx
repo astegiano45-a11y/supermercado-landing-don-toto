@@ -14,20 +14,25 @@ export default function SiteHeader() {
       </div>
 
       <div className="flex flex-col gap-3 border-b border-black/5 bg-white px-5 py-3 shadow-sm sm:px-8 sm:py-4">
-        <div className="flex items-center justify-between gap-4">
-          <Link href="/" className="shrink-0">
-            <DonTotoLogo markClassName="h-8 w-8" textClassName="text-xl" />
-          </Link>
+        {/* en mobile queda el flex de siempre; desde sm: pasa a grid de 3
+            columnas (lados 1fr + centro fijo) para centrar el buscador en
+            el ancho total del header, no solo en el hueco logo↔íconos */}
+        <div className="flex items-center justify-between gap-4 sm:grid sm:grid-cols-[1fr_minmax(0,28rem)_1fr]">
+          <div className="flex min-w-0 items-center gap-4">
+            <Link href="/" className="shrink-0">
+              <DonTotoLogo icon="official" markClassName="h-8 w-auto" textClassName="text-xl" />
+            </Link>
 
-          <CategoriesMenu />
+            <CategoriesMenu />
+          </div>
 
           {/* buscador — visual, sin lógica de búsqueda real todavía */}
-          <div className="hidden flex-1 items-center gap-2 rounded-full border border-black/10 bg-brand-cream px-4 py-2.5 text-sm text-brand-dark/50 sm:flex sm:max-w-md">
+          <div className="hidden items-center gap-2 rounded-full border border-black/10 bg-brand-cream px-4 py-2.5 text-sm text-brand-dark/50 sm:flex">
             <SearchIcon className="h-4 w-4 shrink-0 text-brand-dark/40" />
             <span className="truncate">Buscá carnes, almacén, bebidas…</span>
           </div>
 
-          <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
+          <div className="flex shrink-0 items-center gap-1.5 sm:justify-self-end sm:gap-2">
             <QuickListModal />
             <button
               type="button"

@@ -4,21 +4,19 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatoPeso } from "@/lib/format";
-import { DonTotoLogo } from "./Logo";
 import { PauseIcon, PlayIcon } from "./icons";
 
 const DURATION_MS = 6000;
 
-// El slide "bienvenida" es de marca pura (sin precio) y va siempre primero.
-// Los slides "promo" comparten el layout de precio grande + tachado + ahorro.
+// El slide "bienvenida" es solo la imagen de fondo (hero-don-toto.png) — el
+// mensaje de marca ya viene integrado en la propia imagen, así que no lleva
+// ningún overlay codeado (texto, CTA ni pills) encima. Los slides "promo"
+// comparten el layout de precio grande + tachado + ahorro.
 // Reemplazar por datos reales cuando exista el backend.
 type SlideBienvenida = {
   id: string;
   variant: "bienvenida";
-  descripcion: string;
   imagen: string;
-  ctaLabel: string;
-  ctaHref: string;
 };
 
 type SlidePromo = {
@@ -40,11 +38,7 @@ const SLIDES: Slide[] = [
   {
     id: "bienvenida",
     variant: "bienvenida",
-    descripcion:
-      "Tradición y calidad en cada corte — más de 20 años acompañando a tu familia.",
     imagen: "/hero-don-toto.png",
-    ctaLabel: "Ver catálogo",
-    ctaHref: "/tienda",
   },
   {
     id: "liquidacion",
@@ -57,7 +51,10 @@ const SLIDES: Slide[] = [
     precio: 8900,
     precioAntes: 12900,
     unidad: "kg",
-    imagen: "/hero-don-toto.png",
+    // foto propia del asado con productos Don Toto DA+ a la vista — antes
+    // compartía hero-don-toto.png con el slide de bienvenida, lo que quedaba
+    // inconsistente (mostraba el banner de marca en vez de comida).
+    imagen: "/asado-tira-promo.png",
   },
   {
     id: "congelados",
@@ -143,41 +140,29 @@ export default function Hero() {
             alt={s.variant === "promo" ? s.nombre : "Don Toto DA+"}
             fill
             priority={i === 0}
-            className={`object-cover object-center transition-opacity duration-700 ease-out ${
-              i === index ? "opacity-100" : "opacity-0"
-            }`}
+            className={`object-cover transition-opacity duration-700 ease-out ${
+              // el banner de bienvenida es panorámico (2087×753) — en los recortes
+              // más angostos (mobile 4:5 ≈29% del ancho visible, sm 16:9 ≈64%) el
+              // centro cae en el hueco vacío entre el wordmark y la foto, o corta
+              // el wordmark a la mitad. Se corre el foco hacia la derecha para
+              // priorizar a Don Toto; en lg (21:9 ≈84% visible) ya entra casi
+              // todo el banner, así que ahí va centrado. Los demás slides quedan
+              // en object-center siempre.
+              s.variant === "bienvenida"
+                ? "object-[75%_center] sm:object-[68%_center] lg:object-center"
+                : "object-center"
+            } ${i === index ? "opacity-100" : "opacity-0"}`}
           />
         ))}
 
-        {/* overlay navy — nunca violeta, mantiene la paleta de marca */}
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/75 to-brand-dark/10 sm:bg-gradient-to-r sm:from-brand-dark sm:via-brand-dark/85 sm:to-transparent" />
-        <div className="absolute inset-0 bg-dot-grid bg-dots opacity-40 mix-blend-overlay" />
+        {slide.variant === "promo" && (
+          <>
+            {/* overlay navy — nunca violeta, mantiene la paleta de marca */}
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/75 to-brand-dark/10 sm:bg-gradient-to-r sm:from-brand-dark sm:via-brand-dark/85 sm:to-transparent" />
+            <div className="absolute inset-0 bg-dot-grid bg-dots opacity-40 mix-blend-overlay" />
 
-        <div className="relative flex h-full flex-col justify-end px-5 pb-24 sm:justify-center sm:px-10 sm:pb-0 lg:px-16">
-          <div key={slide.id} className="max-w-md animate-fade-up">
-            {slide.variant === "bienvenida" ? (
-              <>
-                <h1 className="mt-1">
-                  <DonTotoLogo
-                    reversed
-                    markClassName="h-11 w-11 sm:h-14 sm:w-14"
-                    textClassName="text-4xl sm:text-5xl lg:text-6xl"
-                  />
-                </h1>
-                <p className="mt-4 max-w-sm text-sm text-white/70 sm:text-base">
-                  {slide.descripcion}
-                </p>
-                <div className="mt-6">
-                  <Link
-                    href={slide.ctaHref}
-                    className="inline-block rounded-full bg-white px-7 py-3 text-sm font-extrabold text-brand-navy shadow-tagSm transition hover:-translate-y-0.5 active:translate-y-0"
-                  >
-                    {slide.ctaLabel}
-                  </Link>
-                </div>
-              </>
-            ) : (
-              <>
+            <div className="relative flex h-full flex-col justify-end px-5 pb-24 sm:justify-center sm:px-10 sm:pb-0 lg:px-16">
+              <div key={slide.id} className="max-w-md animate-fade-up">
                 <span className="inline-block -rotate-2 rounded-md bg-brand-orange px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-tagSm">
                   {slide.eyebrow}
                 </span>
@@ -217,20 +202,21 @@ export default function Hero() {
                     Ver ofertas del día
                   </Link>
                 </div>
-              </>
-            )}
-          </div>
-        </div>
+              </div>
+            </div>
 
-        {/* badges de promoción del negocio — persistentes, no rotan con el slide */}
-        <div className="absolute bottom-14 left-5 flex flex-wrap gap-2 sm:bottom-12 sm:left-10 lg:left-16">
-          <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-sm ring-1 ring-white/15">
-            🎟️ Con tu tarjeta Don Toto DA+ acumulás puntos
-          </span>
-          <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-sm ring-1 ring-white/15">
-            🏪 Retirá hoy en el local
-          </span>
-        </div>
+            {/* badges de promoción del negocio — persistentes mientras dura un
+                slide promo, pero no se muestran sobre la bienvenida */}
+            <div className="absolute bottom-14 left-5 flex flex-wrap gap-2 sm:bottom-12 sm:left-10 lg:left-16">
+              <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-sm ring-1 ring-white/15">
+                🎟️ Con tu tarjeta Don Toto DA+ acumulás puntos
+              </span>
+              <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-sm ring-1 ring-white/15">
+                🏪 Retirá hoy en el local
+              </span>
+            </div>
+          </>
+        )}
 
         {/* controles del carrusel — barra de progreso segmentada + play/pausa */}
         <div className="absolute inset-x-0 bottom-0 flex items-center gap-3 px-5 py-3.5 sm:px-10 lg:px-16">

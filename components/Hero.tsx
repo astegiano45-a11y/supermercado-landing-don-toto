@@ -4,15 +4,51 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { formatoPeso } from "@/lib/format";
+import { DonTotoLogo } from "./Logo";
 import { PauseIcon, PlayIcon } from "./icons";
 
 const DURATION_MS = 6000;
 
-// Datos de ejemplo — el mismo layout (precio grande + tachado + ahorro) se
-// reusa por slide. Reemplazar por datos reales cuando exista el backend.
-const SLIDES = [
+// El slide "bienvenida" es de marca pura (sin precio) y va siempre primero.
+// Los slides "promo" comparten el layout de precio grande + tachado + ahorro.
+// Reemplazar por datos reales cuando exista el backend.
+type SlideBienvenida = {
+  id: string;
+  variant: "bienvenida";
+  descripcion: string;
+  imagen: string;
+  ctaLabel: string;
+  ctaHref: string;
+};
+
+type SlidePromo = {
+  id: string;
+  variant: "promo";
+  eyebrow: string;
+  categoria: string;
+  nombre: string;
+  descripcion: string;
+  precio: number;
+  precioAntes: number;
+  unidad: string;
+  imagen: string;
+};
+
+type Slide = SlideBienvenida | SlidePromo;
+
+const SLIDES: Slide[] = [
+  {
+    id: "bienvenida",
+    variant: "bienvenida",
+    descripcion:
+      "Tradición y calidad en cada corte — más de 20 años acompañando a tu familia.",
+    imagen: "/hero-don-toto.png",
+    ctaLabel: "Ver catálogo",
+    ctaHref: "/tienda",
+  },
   {
     id: "liquidacion",
+    variant: "promo",
     eyebrow: "🔥 Liquidación del día",
     categoria: "Carnicería Don Toto",
     nombre: "Asado de Tira Premium",
@@ -25,6 +61,7 @@ const SLIDES = [
   },
   {
     id: "congelados",
+    variant: "promo",
     eyebrow: "❄️ Congelados para la semana",
     categoria: "Heladería Don Toto",
     nombre: "Helado Artesanal 1L",
@@ -38,6 +75,7 @@ const SLIDES = [
   },
   {
     id: "frescos",
+    variant: "promo",
     eyebrow: "🥬 Frescos de la semana",
     categoria: "Verdulería Don Toto",
     nombre: "Selección de Frutas y Verduras",
@@ -51,6 +89,7 @@ const SLIDES = [
   },
   {
     id: "ofertas-semana",
+    variant: "promo",
     eyebrow: "🛒 Ofertas de la semana",
     categoria: "Almacén Don Toto",
     nombre: "Combo Almacén Esencial",
@@ -89,7 +128,6 @@ export default function Hero() {
   };
 
   const slide = SLIDES[index];
-  const ahorro = slide.precioAntes - slide.precio;
 
   return (
     <section
@@ -102,7 +140,7 @@ export default function Hero() {
           <Image
             key={s.id}
             src={s.imagen}
-            alt={s.nombre}
+            alt={s.variant === "promo" ? s.nombre : "Don Toto DA+"}
             fill
             priority={i === 0}
             className={`object-cover object-center transition-opacity duration-700 ease-out ${
@@ -117,45 +155,70 @@ export default function Hero() {
 
         <div className="relative flex h-full flex-col justify-end px-5 pb-24 sm:justify-center sm:px-10 sm:pb-0 lg:px-16">
           <div key={slide.id} className="max-w-md animate-fade-up">
-            <span className="inline-block -rotate-2 rounded-md bg-brand-orange px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-tagSm">
-              {slide.eyebrow}
-            </span>
-
-            <p className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-white/60">
-              {slide.categoria}
-            </p>
-            <h1 className="mt-1 font-display text-3xl font-extrabold leading-[1.05] text-white sm:text-4xl lg:text-5xl">
-              {slide.nombre}
-            </h1>
-            <p className="mt-3 max-w-sm text-sm text-white/70 sm:text-base">
-              {slide.descripcion}
-            </p>
-
-            <div className="mt-6 flex flex-wrap items-end gap-x-4 gap-y-2">
-              <div className="flex items-baseline gap-2">
-                <span className="text-base text-white/45 line-through">
-                  {formatoPeso(slide.precioAntes)}
+            {slide.variant === "bienvenida" ? (
+              <>
+                <h1 className="mt-1">
+                  <DonTotoLogo
+                    reversed
+                    markClassName="h-11 w-11 sm:h-14 sm:w-14"
+                    textClassName="text-4xl sm:text-5xl lg:text-6xl"
+                  />
+                </h1>
+                <p className="mt-4 max-w-sm text-sm text-white/70 sm:text-base">
+                  {slide.descripcion}
+                </p>
+                <div className="mt-6">
+                  <Link
+                    href={slide.ctaHref}
+                    className="inline-block rounded-full bg-white px-7 py-3 text-sm font-extrabold text-brand-navy shadow-tagSm transition hover:-translate-y-0.5 active:translate-y-0"
+                  >
+                    {slide.ctaLabel}
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <span className="inline-block -rotate-2 rounded-md bg-brand-orange px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-tagSm">
+                  {slide.eyebrow}
                 </span>
-                <span className="font-display text-5xl font-extrabold tabular-nums text-brand-orange sm:text-6xl">
-                  {formatoPeso(slide.precio)}
-                </span>
-                <span className="text-sm font-semibold text-white/60">
-                  /{slide.unidad}
-                </span>
-              </div>
-            </div>
 
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              <span className="rounded-full bg-brand-blue px-4 py-1.5 text-xs font-bold text-white">
-                Ahorrás {formatoPeso(ahorro)}
-              </span>
-              <Link
-                href="#liquidacion-del-dia"
-                className="rounded-full bg-white px-7 py-3 text-sm font-extrabold text-brand-navy shadow-tagSm transition hover:-translate-y-0.5 active:translate-y-0"
-              >
-                Ver ofertas del día
-              </Link>
-            </div>
+                <p className="mt-4 text-xs font-bold uppercase tracking-[0.2em] text-white/60">
+                  {slide.categoria}
+                </p>
+                <h1 className="mt-1 font-display text-3xl font-extrabold leading-[1.05] text-white sm:text-4xl lg:text-5xl">
+                  {slide.nombre}
+                </h1>
+                <p className="mt-3 max-w-sm text-sm text-white/70 sm:text-base">
+                  {slide.descripcion}
+                </p>
+
+                <div className="mt-6 flex flex-wrap items-end gap-x-4 gap-y-2">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-base text-white/45 line-through">
+                      {formatoPeso(slide.precioAntes)}
+                    </span>
+                    <span className="font-display text-5xl font-extrabold tabular-nums text-brand-orange sm:text-6xl">
+                      {formatoPeso(slide.precio)}
+                    </span>
+                    <span className="text-sm font-semibold text-white/60">
+                      /{slide.unidad}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <span className="rounded-full bg-brand-blue px-4 py-1.5 text-xs font-bold text-white">
+                    Ahorrás {formatoPeso(slide.precioAntes - slide.precio)}
+                  </span>
+                  <Link
+                    href="#liquidacion-del-dia"
+                    className="rounded-full bg-white px-7 py-3 text-sm font-extrabold text-brand-navy shadow-tagSm transition hover:-translate-y-0.5 active:translate-y-0"
+                  >
+                    Ver ofertas del día
+                  </Link>
+                </div>
+              </>
+            )}
           </div>
         </div>
 

@@ -134,15 +134,14 @@ export default function Hero() {
     >
       <div
         className={`relative w-full ${
-          // el banner de bienvenida es panorámico (2087×753 ≈ 2.77:1) y lleva
-          // el wordmark "DON TOTO DA+" + tagline pegados al borde izquierdo,
-          // ocupando ~48% del ancho de la imagen. El recorte 4:5 de mobile
-          // (~29% del ancho visible) es más angosto que el propio texto: no
-          // hay object-position que lo muestre entero ahí. Se le da a este
-          // slide un aspecto más panorámico (16:9 en todos los breakpoints,
-          // en vez de 4:5 en mobile) para que el recorte sea lo bastante
-          // ancho como para no cortar el wordmark — a costa de una franja de
-          // hero más baja en mobile mientras dura este slide. Los demás
+          // el banner de bienvenida (hero-don-toto.png) es 1920×1080, 16:9
+          // exacto, con el wordmark "DON TOTO DA+" y el carnicero ya
+          // compuestos dentro del cuadro sin necesidad de recortar nada. Se
+          // le da a este slide un aspecto 16:9 fijo en todos los breakpoints
+          // (en vez de 4:5 en mobile / 21:9 en lg como los demás) para que
+          // coincida exactamente con la relación de aspecto de la imagen —
+          // object-cover queda entonces idéntico a object-contain, sin
+          // recortar ni dejar franjas vacías en ningún ancho. Los demás
           // slides no se tocan.
           slide.variant === "bienvenida"
             ? "aspect-[16/9]"
@@ -156,13 +155,9 @@ export default function Hero() {
             alt={s.variant === "promo" ? s.nombre : "Don Toto DA+"}
             fill
             priority={i === 0}
-            className={`object-cover transition-opacity duration-700 ease-out ${
-              // foco a la izquierda siempre — ahí vive el wordmark+tagline.
-              // Se prioriza el texto completo aunque la foto del carnicero
-              // quede más recortada/corrida hacia afuera por la derecha.
-              // Los demás slides quedan en object-center siempre.
-              s.variant === "bienvenida" ? "object-left" : "object-center"
-            } ${i === index ? "opacity-100" : "opacity-0"}`}
+            className={`object-cover object-center transition-opacity duration-700 ease-out ${
+              i === index ? "opacity-100" : "opacity-0"
+            }`}
           />
         ))}
 

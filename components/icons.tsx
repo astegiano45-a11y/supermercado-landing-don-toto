@@ -147,6 +147,18 @@ export function ChevronRightIcon({
   );
 }
 
+export function ChevronLeftIcon({
+  className = "h-4 w-4",
+}: {
+  className?: string;
+}) {
+  return (
+    <svg {...base} strokeWidth={2} className={className} aria-hidden="true">
+      <path d="m15 6-6 6 6 6" />
+    </svg>
+  );
+}
+
 // — Franja de value props —
 
 export function TagIcon({ className = "h-6 w-6" }: { className?: string }) {

@@ -2,13 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
+import CategoriaHero from "@/components/CategoriaHero";
 import {
   CATEGORIA_COLOR_CLASSES,
   categorias,
   getCategoria,
   getProductosPorCategoria,
 } from "@/lib/catalogo";
-import CategoriaClient from "./categoria-client";
+import { getHeroCategoria, getSubcategorias } from "@/lib/categoria-clp";
+import CategoriaExplorer from "./categoria-explorer";
 
 export function generateStaticParams() {
   return categorias.map((c) => ({ nombre: c.slug }));
@@ -36,6 +38,8 @@ export default function CategoriaPage({
   if (!categoria) notFound();
 
   const productosCategoria = getProductosPorCategoria(categoria.slug);
+  const heroCategoria = getHeroCategoria(categoria.slug);
+  const subcategorias = getSubcategorias(categoria.slug);
 
   return (
     <main className="flex min-h-screen flex-col bg-white">
@@ -53,14 +57,7 @@ export default function CategoriaPage({
           </span>
         </nav>
 
-        <div className="mx-auto mt-3 flex max-w-6xl items-center gap-3">
-          <span className="text-3xl">{categoria.emoji}</span>
-          <h1 className="text-xl font-extrabold text-brand-navy sm:text-2xl">
-            {categoria.nombre}
-          </h1>
-        </div>
-
-        <div className="mx-auto mt-4 flex max-w-6xl gap-2 overflow-x-auto pb-1">
+        <div className="mx-auto mt-3 flex max-w-6xl gap-2 overflow-x-auto pb-1">
           {categorias.map((c) => {
             const activa = c.slug === categoria.slug;
             return (
@@ -80,7 +77,19 @@ export default function CategoriaPage({
         </div>
       </div>
 
-      <CategoriaClient categoria={categoria} productos={productosCategoria} />
+      {heroCategoria && (
+        <CategoriaHero
+          categoria={categoria}
+          imagen={heroCategoria.imagen}
+          bajada={heroCategoria.bajada}
+        />
+      )}
+
+      <CategoriaExplorer
+        categoria={categoria}
+        productos={productosCategoria}
+        subcategorias={subcategorias}
+      />
     </main>
   );
 }

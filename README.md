@@ -16,6 +16,8 @@ Abrí http://localhost:3000
 - `app/page.tsx` — landing principal (hero, galería de góndolas, CTAs).
 - `app/tienda/page.tsx` — placeholder de la tienda web (conectar acá el catálogo/checkout real).
 - `app/layout.tsx` — layout global y metadata.
+- `components/QuickListModal.tsx` — modal "Lista de compras rápida", accesible desde el ícono de lista del header (`SiteHeader`). Permite buscar productos del catálogo mock, tildar cantidades agrupadas por categoría y ver un total estimado antes de pasar a `/tienda`. Es una herramienta de planificación, no un carrito de compra real.
+- `lib/cart-context.tsx` — estado de carrito compartido (React Context, sin persistencia). `QuickListModal` escribe las cantidades y `components/CartButton.tsx` (el ícono de carrito del header) las lee para mostrar el total en tiempo real.
 - `tailwind.config.js` — colores de marca (`brand.green`, `brand.orange`, `brand.dark`).
 
 ## Próximos pasos

@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { CartIcon, SearchIcon, UserIcon } from "./icons";
+import { SearchIcon, UserIcon } from "./icons";
 import { DonTotoLogo } from "./Logo";
+import CartButton from "./CartButton";
 import CategoriesMenu from "./CategoriesMenu";
 import QuickListModal from "./QuickListModal";
 
@@ -41,16 +42,7 @@ export default function SiteHeader() {
             >
               <UserIcon className="h-5 w-5" />
             </button>
-            <button
-              type="button"
-              aria-label="Carrito de compras"
-              className="relative flex h-10 w-10 items-center justify-center rounded-full text-brand-navy transition hover:bg-brand-cream active:scale-95"
-            >
-              <CartIcon className="h-5 w-5" />
-              <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-orange text-[10px] font-bold text-white">
-                3
-              </span>
-            </button>
+            <CartButton />
           </div>
         </div>
 

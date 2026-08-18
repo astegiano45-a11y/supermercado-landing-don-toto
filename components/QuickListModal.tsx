@@ -3,9 +3,12 @@
 // Modal "Lista de compras rápida" — herramienta de planificación 100% cliente
 // (no hay cart/checkout real todavía, ver app/tienda). El usuario tilda
 // productos del catálogo mock, ve un total estimado, y puede seguir a /tienda.
+// Las cantidades viven en CartProvider (lib/cart-context.tsx), compartidas
+// con el badge del ícono de carrito en SiteHeader.
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { categorias, productos, CATEGORIA_COLOR_CLASSES } from "@/lib/catalogo";
+import { useCart } from "@/lib/cart-context";
 import { formatoPeso } from "@/lib/format";
 import {
   CloseIcon,
@@ -19,7 +22,7 @@ import {
 export default function QuickListModal() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
-  const [cantidades, setCantidades] = useState<Record<string, number>>({});
+  const { cantidades, totalItems, sumar, restar, vaciar } = useCart();
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Cerrar con Escape + bloquear scroll de fondo mientras el modal está abierto.
@@ -50,11 +53,6 @@ export default function QuickListModal() {
     );
   }, [query]);
 
-  const totalItems = useMemo(
-    () => Object.values(cantidades).reduce((acc, n) => acc + n, 0),
-    [cantidades]
-  );
-
   const totalPrecio = useMemo(
     () =>
       productos.reduce(
@@ -63,25 +61,6 @@ export default function QuickListModal() {
       ),
     [cantidades]
   );
-
-  function sumar(id: string) {
-    setCantidades((prev) => ({ ...prev, [id]: (prev[id] ?? 0) + 1 }));
-  }
-
-  function restar(id: string) {
-    setCantidades((prev) => {
-      const actual = prev[id] ?? 0;
-      if (actual <= 1) {
-        const { [id]: _omitido, ...resto } = prev;
-        return resto;
-      }
-      return { ...prev, [id]: actual - 1 };
-    });
-  }
-
-  function vaciar() {
-    setCantidades({});
-  }
 
   return (
     <>

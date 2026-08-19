@@ -39,7 +39,7 @@ export default function SucursalBar() {
         onClick={abrirSelector}
         aria-expanded={abierto}
         aria-haspopup="dialog"
-        className="flex w-full items-center justify-center gap-1.5 border-b border-black/5 bg-brand-cream px-5 py-2 text-xs font-semibold text-brand-navy transition hover:bg-brand-orange/10 sm:px-8"
+        className="flex w-full items-center justify-start gap-1.5 border-b border-black/5 bg-brand-cream px-5 py-2 text-xs font-semibold text-brand-navy transition hover:bg-brand-orange/10 sm:px-8"
       >
         <span className="truncate">
           {sucursal ? (

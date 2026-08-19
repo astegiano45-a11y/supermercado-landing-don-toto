@@ -78,7 +78,6 @@ export default function CategoriaExplorer({
 
       <CategoriaClient
         key={subcategoriaActiva ?? "todas"}
-        categoria={categoria}
         productos={productosVisibles}
       />
     </>

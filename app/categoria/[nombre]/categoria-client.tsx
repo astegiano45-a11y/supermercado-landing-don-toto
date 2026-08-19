@@ -1,22 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import {
-  CATEGORIA_COLOR_CLASSES,
-  type Categoria,
-  type Producto,
-} from "@/lib/catalogo";
+import { type Producto } from "@/lib/catalogo";
 import { formatoPeso } from "@/lib/format";
+import ProductCard from "@/components/ProductCard";
 
 export default function CategoriaClient({
-  categoria,
   productos,
 }: {
-  categoria: Categoria;
   productos: Producto[];
 }) {
-  const colorClasses = CATEGORIA_COLOR_CLASSES[categoria.color];
-
   const marcasDisponibles = useMemo(
     () => Array.from(new Set(productos.map((p) => p.marca))).sort(),
     [productos]
@@ -153,50 +146,9 @@ export default function CategoriaClient({
             </div>
           ) : (
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
-              {productosFiltrados.map((producto) => {
-                const tieneDescuento =
-                  producto.precioAntes && producto.precioAntes > producto.precio;
-                return (
-                  <div
-                    key={producto.id}
-                    className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-black/5 transition hover:-translate-y-1 hover:shadow-md"
-                  >
-                    <div
-                      className={`relative flex aspect-square items-center justify-center ${colorClasses.soft}`}
-                    >
-                      {tieneDescuento && (
-                        <span className="absolute left-2 top-2 rounded-full bg-brand-orange px-2 py-0.5 text-[10px] font-extrabold text-white">
-                          OFERTA
-                        </span>
-                      )}
-                      <span className="text-5xl transition group-hover:scale-110">
-                        {producto.emoji}
-                      </span>
-                    </div>
-                    <div className="flex flex-1 flex-col gap-1 p-3">
-                      <span className="text-[11px] font-semibold uppercase tracking-wide text-gray-400">
-                        {producto.marca}
-                      </span>
-                      <span className="text-sm font-bold leading-snug text-brand-navy">
-                        {producto.nombre}
-                      </span>
-                      <div className="mt-auto flex items-baseline gap-2 pt-2">
-                        {tieneDescuento && (
-                          <span className="text-xs text-gray-400 line-through">
-                            {formatoPeso(producto.precioAntes!)}
-                          </span>
-                        )}
-                        <span className={`text-base font-extrabold ${colorClasses.text}`}>
-                          {formatoPeso(producto.precio)}
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-gray-400">
-                        por {producto.unidad}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
+              {productosFiltrados.map((producto) => (
+                <ProductCard key={producto.id} producto={producto} />
+              ))}
             </div>
           )}
         </div>

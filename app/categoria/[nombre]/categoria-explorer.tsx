@@ -12,6 +12,7 @@ import type { Categoria, Producto } from "@/lib/catalogo";
 import type { Subcategoria } from "@/lib/categoria-clp";
 import SubcategoriasRow from "@/components/SubcategoriasRow";
 import CategoriaCarrusel from "@/components/CategoriaCarrusel";
+import CategoriaPills from "@/components/CategoriaPills";
 import ProductosConFiltros from "@/components/ProductosConFiltros";
 
 export default function CategoriaExplorer({
@@ -76,6 +77,8 @@ export default function CategoriaExplorer({
           productos={productosVisibles}
         />
       )}
+
+      <CategoriaPills categoriaActivaSlug={categoria.slug} />
 
       <ProductosConFiltros
         key={subcategoriaActiva ?? "todas"}

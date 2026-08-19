@@ -167,7 +167,7 @@ export default function Hero() {
             <div className="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/75 to-brand-dark/10 sm:bg-gradient-to-r sm:from-brand-dark sm:via-brand-dark/85 sm:to-transparent" />
             <div className="absolute inset-0 bg-dot-grid bg-dots opacity-40 mix-blend-overlay" />
 
-            <div className="relative flex h-full flex-col justify-end px-5 pb-24 sm:justify-center sm:px-10 sm:pb-0 lg:px-16">
+            <div className="relative flex h-full flex-col justify-end px-5 pb-16 sm:justify-center sm:px-10 sm:pb-0 lg:px-16">
               <div key={slide.id} className="max-w-md animate-fade-up">
                 <span className="inline-block -rotate-2 rounded-md bg-brand-orange px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest text-white shadow-tagSm">
                   {slide.eyebrow}
@@ -208,12 +208,27 @@ export default function Hero() {
                     Ver ofertas del día
                   </Link>
                 </div>
+
+                {/* badges de promoción del negocio — en mobile van en el
+                    flujo normal, apiladas debajo del CTA (antes vivían acá
+                    con position:absolute + un pb-24 "adivinado" en el
+                    contenedor padre que no alcanzaba cuando el texto del
+                    primer badge envolvía a 2 líneas, pisando el botón "Ver
+                    ofertas del día"). Desde sm: se muestra la versión de
+                    escritorio, sin cambios: franja fija cerca del borde
+                    inferior, independiente de la altura del contenido. */}
+                <div className="mt-4 flex flex-wrap gap-2 sm:hidden">
+                  <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-sm ring-1 ring-white/15">
+                    🎟️ Con tu tarjeta Don Toto DA+ acumulás puntos
+                  </span>
+                  <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-sm ring-1 ring-white/15">
+                    🏪 Retirá hoy en el local
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* badges de promoción del negocio — persistentes mientras dura un
-                slide promo, pero no se muestran sobre la bienvenida */}
-            <div className="absolute bottom-14 left-5 flex flex-wrap gap-2 sm:bottom-12 sm:left-10 lg:left-16">
+            <div className="absolute bottom-12 left-10 hidden flex-wrap gap-2 sm:flex lg:left-16">
               <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-semibold text-white backdrop-blur-sm ring-1 ring-white/15">
                 🎟️ Con tu tarjeta Don Toto DA+ acumulás puntos
               </span>

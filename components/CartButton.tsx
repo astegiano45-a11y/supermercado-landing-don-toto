@@ -13,11 +13,11 @@ export default function CartButton() {
     <button
       type="button"
       aria-label="Carrito de compras"
-      className="relative flex h-12 w-12 items-center justify-center rounded-full text-brand-navy transition hover:bg-brand-cream active:scale-95"
+      className="relative flex h-10 w-10 items-center justify-center rounded-full text-brand-navy transition hover:bg-brand-cream active:scale-95 sm:h-12 sm:w-12"
     >
-      <CartIcon className="h-6 w-6" />
+      <CartIcon className="h-5 w-5 sm:h-6 sm:w-6" />
       {totalItems > 0 && (
-        <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-brand-orange text-[11px] font-bold text-white">
+        <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-brand-orange text-[10px] font-bold text-white sm:-right-1 sm:-top-1 sm:h-5 sm:w-5 sm:text-[11px]">
           {totalItems > 9 ? "9+" : totalItems}
         </span>
       )}

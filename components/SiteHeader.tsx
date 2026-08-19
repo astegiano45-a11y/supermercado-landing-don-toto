@@ -19,13 +19,17 @@ export default function SiteHeader() {
         {/* en mobile queda el flex de siempre; desde sm: pasa a grid de 3
             columnas (lados 1fr + centro fijo) para centrar el buscador en
             el ancho total del header, no solo en el hueco logo↔íconos */}
-        <div className="flex items-center justify-between gap-4 sm:grid sm:grid-cols-[1fr_minmax(0,28rem)_1fr]">
+        <div className="flex items-center justify-between gap-2 sm:gap-4 sm:grid sm:grid-cols-[1fr_minmax(0,28rem)_1fr]">
           <div className="flex min-w-0 items-center gap-4">
             <Link href="/" className="shrink-0">
               <DonTotoLogo icon="official" markClassName="h-8 w-auto" textClassName="text-xl" />
             </Link>
 
-            <CategoriesMenu />
+            {/* en mobile no entra acá junto a los íconos ya agrandados —
+                se muda a la fila del buscador, debajo (ver más abajo) */}
+            <div className="hidden sm:block">
+              <CategoriesMenu />
+            </div>
           </div>
 
           {/* buscador — visual, sin lógica de búsqueda real todavía */}
@@ -39,18 +43,22 @@ export default function SiteHeader() {
             <button
               type="button"
               aria-label="Mi cuenta"
-              className="flex h-12 w-12 items-center justify-center rounded-full text-brand-navy transition hover:bg-brand-cream active:scale-95"
+              className="flex h-10 w-10 items-center justify-center rounded-full text-brand-navy transition hover:bg-brand-cream active:scale-95 sm:h-12 sm:w-12"
             >
-              <UserIcon className="h-6 w-6" />
+              <UserIcon className="h-5 w-5 sm:h-6 sm:w-6" />
             </button>
             <CartButton />
           </div>
         </div>
 
-        {/* buscador mobile — apilado debajo del logo */}
-        <div className="flex items-center gap-2 rounded-full border border-black/10 bg-brand-cream px-4 py-2.5 text-sm text-brand-dark/50 sm:hidden">
-          <SearchIcon className="h-4 w-4 shrink-0 text-brand-dark/40" />
-          <span className="truncate">Buscá carnes, almacén, bebidas…</span>
+        {/* fila mobile — categorías + buscador, apilados debajo del logo.
+            En sm: en adelante cada uno vuelve a su lugar de arriba. */}
+        <div className="flex items-center gap-2 sm:hidden">
+          <CategoriesMenu />
+          <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full border border-black/10 bg-brand-cream px-4 py-2.5 text-sm text-brand-dark/50">
+            <SearchIcon className="h-4 w-4 shrink-0 text-brand-dark/40" />
+            <span className="truncate">Buscá carnes, almacén, bebidas…</span>
+          </div>
         </div>
       </div>
 

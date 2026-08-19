@@ -4,6 +4,7 @@ import { DonTotoLogo } from "./Logo";
 import CartButton from "./CartButton";
 import CategoriesMenu from "./CategoriesMenu";
 import QuickListModal from "./QuickListModal";
+import SucursalBar from "./SucursalBar";
 
 export default function SiteHeader() {
   return (
@@ -52,6 +53,9 @@ export default function SiteHeader() {
           <span className="truncate">Buscá carnes, almacén, bebidas…</span>
         </div>
       </div>
+
+      {/* barra de sucursal para retiro — visible en todas las páginas */}
+      <SucursalBar />
     </header>
   );
 }

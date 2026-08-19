@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo, Bricolage_Grotesque } from "next/font/google";
 import { CartProvider } from "@/lib/cart-context";
+import { BranchProvider } from "@/lib/branch-context";
 import "./globals.css";
 
 // Archivo: texto de UI, precios pequeños, labels — limpio y legible.
@@ -34,7 +35,9 @@ export default function RootLayout({
       <body
         className={`${archivo.variable} ${bricolage.variable} bg-brand-cream font-sans text-brand-dark antialiased`}
       >
-        <CartProvider>{children}</CartProvider>
+        <CartProvider>
+          <BranchProvider>{children}</BranchProvider>
+        </CartProvider>
       </body>
     </html>
   );

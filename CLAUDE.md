@@ -53,7 +53,7 @@ Extracted out of the former single-file `app/page.tsx` — home page sections an
 
 ## Known placeholders to be aware of
 
-- `productos`/`categorias` in `lib/catalogo.ts` are mock data (Unsplash stock photos for the few products/categories that have `imagen`, invented prices/brands) — meant to be replaced by a real API/CMS. Unsplash remote images are allowlisted in `next.config.js` under `images.remotePatterns`.
+- `productos`/`categorias` in `lib/catalogo.ts` are mock data (invented prices/brands) — meant to be replaced by a real API/CMS. All 40 `productos` and all 5 `categorias` now carry a real Unsplash `imagen` (each URL checked for an HTTP 200 before being added). Unsplash remote images are allowlisted in `next.config.js` under `images.remotePatterns`.
 - `app/categoria/[nombre]/categoria-client.tsx` has filtering (price + brand) but no cart, sorting, or checkout logic yet.
 - The cart (`lib/cart-context.tsx`) is only wired up on the `QuickListModal` ↔ `CartButton` badge. The "+" button on `ProductCard` and the inline product cards in `categoria-client.tsx` are not connected to `useCart()` yet — clicking them does nothing.
 - The "Descargar App" link in `app/page.tsx` is a dead `href="#"` pending the real App Store/Google Play URL. Several footer links (`Centro de ayuda`, `Envíos`, `WhatsApp`, social links) are also dead `href="#"` placeholders.

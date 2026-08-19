@@ -90,11 +90,13 @@ export default function Home() {
       {/* IMPERDIBLES SEMANALES — 3 tarjetas de ocasión, estilo Líder */}
       <ImperdiblesSemanales />
 
+      {/* MI CLUB — devolución en puntos pagando con tarjeta propia. Pegada a
+          Imperdibles Semanales para agrupar los banners promocionales
+          arriba de la página, en vez de quedar sola cerca del final. */}
+      <MiClubStrip />
+
       {/* RETIRA GRATIS — banner corto, franja naranja */}
       <RetiraGratisBanner />
-
-      {/* MI CLUB — devolución en puntos pagando con tarjeta propia */}
-      <MiClubStrip />
 
       {/* BENEFICIOS ADICIONALES — 4 tarjetas de color del programa de fidelidad */}
       <BeneficiosAdicionales />

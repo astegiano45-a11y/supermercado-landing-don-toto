@@ -48,7 +48,27 @@ export default function ImperdiblesSemanales() {
           Imperdibles semanales
         </h2>
 
-        <div className="mt-6 grid gap-5 sm:grid-cols-3">
+        {/* banner destacado — pieza de diseño completa (Canva), se muestra
+            entera sin recortar: tiene texto pegado a los dos bordes. El PNG
+            original traía ~22% de margen blanco arriba y abajo "horneado"
+            en el archivo (nada que ver con el contenedor); se recortó al
+            contenido real (2110×420, ver public/banner-frutas-verduras.png)
+            para que se vea a pantalla completa, estilo banner nativo. */}
+        <Link
+          href="/categoria/frescos-y-lacteos"
+          className="group mt-6 block overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-brand-navy/5 transition duration-300 hover:-translate-y-1.5"
+        >
+          <Image
+            src="/banner-frutas-verduras.png"
+            alt="Frutas y verduras a precio rebajado, desde $1.000"
+            width={2110}
+            height={420}
+            className="h-auto w-full"
+            sizes="(max-width: 1024px) 100vw, 1152px"
+          />
+        </Link>
+
+        <div className="mt-5 grid gap-5 sm:grid-cols-3">
           {IMPERDIBLES.map((item) => (
             <div
               key={item.id}

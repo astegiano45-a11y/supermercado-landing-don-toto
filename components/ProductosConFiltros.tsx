@@ -1,11 +1,17 @@
 "use client";
 
+// Sidebar de filtros (marca + precio máximo) + grid de ProductCard.
+// Genérico a propósito: no sabe nada de categoría ni subcategoría — quien
+// lo usa (CategoriaExplorer, TiendaClient) le pasa el `productos` ya
+// recortado por esa dimensión y, si hace falta resetear marca/precio al
+// cambiar de contexto, lo remonta con un `key` distinto en vez de que este
+// componente tenga que enterarse de esa lógica externa.
 import { useMemo, useState } from "react";
 import { type Producto } from "@/lib/catalogo";
 import { formatoPeso } from "@/lib/format";
 import ProductCard from "@/components/ProductCard";
 
-export default function CategoriaClient({
+export default function ProductosConFiltros({
   productos,
 }: {
   productos: Producto[];

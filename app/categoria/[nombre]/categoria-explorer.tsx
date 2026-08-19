@@ -1,17 +1,18 @@
 "use client";
 
 // Orquesta la capa nueva de la CLP (subcategorías + carruseles) por encima
-// del grid con filtros existente. A propósito NO toca categoria-client.tsx:
-// solo le pasa un `productos` ya filtrado por subcategoría activa, y usa
-// `key` para forzar un remount cuando cambia la subcategoría, así sus
-// filtros internos de precio/marca (useState) arrancan de cero en el
-// contexto nuevo en vez de quedar pisados con valores del filtro anterior.
+// del grid con filtros compartido (components/ProductosConFiltros.tsx, el
+// mismo que usa /tienda). A propósito no toca su lógica interna: solo le
+// pasa un `productos` ya filtrado por subcategoría activa, y usa `key` para
+// forzar un remount cuando cambia la subcategoría, así sus filtros internos
+// de precio/marca (useState) arrancan de cero en el contexto nuevo en vez
+// de quedar pisados con valores del filtro anterior.
 import { useMemo, useState } from "react";
 import type { Categoria, Producto } from "@/lib/catalogo";
 import type { Subcategoria } from "@/lib/categoria-clp";
 import SubcategoriasRow from "@/components/SubcategoriasRow";
 import CategoriaCarrusel from "@/components/CategoriaCarrusel";
-import CategoriaClient from "./categoria-client";
+import ProductosConFiltros from "@/components/ProductosConFiltros";
 
 export default function CategoriaExplorer({
   categoria,
@@ -76,7 +77,7 @@ export default function CategoriaExplorer({
         />
       )}
 
-      <CategoriaClient
+      <ProductosConFiltros
         key={subcategoriaActiva ?? "todas"}
         productos={productosVisibles}
       />

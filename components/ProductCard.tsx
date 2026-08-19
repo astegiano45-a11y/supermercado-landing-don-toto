@@ -1,10 +1,15 @@
+"use client";
+
 import Image from "next/image";
 import type { Producto } from "@/lib/catalogo";
+import { useCart } from "@/lib/cart-context";
 import { formatoPeso } from "@/lib/format";
 import DiscountBadge from "./DiscountBadge";
 import { PlusIcon } from "./icons";
 
 export default function ProductCard({ producto }: { producto: Producto }) {
+  const { sumar } = useCart();
+
   const tieneDescuento =
     producto.precioAntes && producto.precioAntes > producto.precio;
   const porcentaje = tieneDescuento
@@ -58,6 +63,7 @@ export default function ProductCard({ producto }: { producto: Producto }) {
 
           <button
             type="button"
+            onClick={() => sumar(producto.id)}
             aria-label={`Agregar ${producto.nombre}`}
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-navy text-white shadow-tagSm transition hover:bg-brand-orange active:scale-90"
           >

@@ -13,6 +13,7 @@ const IMPERDIBLES = [
     precio: 990,
     imagen:
       "https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=900&q=80",
+    href: "/categoria/almacen",
   },
   {
     id: "compartir",
@@ -22,6 +23,7 @@ const IMPERDIBLES = [
     precio: 6990,
     imagen:
       "https://images.unsplash.com/photo-1506354666786-959d6d497f1a?w=900&q=80",
+    href: "/categoria/bebidas-y-snacks",
   },
   {
     id: "desayuno",
@@ -31,6 +33,7 @@ const IMPERDIBLES = [
     precio: 690,
     imagen:
       "https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=900&q=80",
+    href: "/categoria/frescos-y-lacteos",
   },
 ];
 
@@ -77,7 +80,7 @@ export default function ImperdiblesSemanales() {
                   {item.descripcion}
                 </p>
                 <Link
-                  href="/tienda"
+                  href={item.href}
                   className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full border-2 border-brand-navy px-4 py-2 text-xs font-extrabold text-brand-navy transition hover:bg-brand-navy hover:text-white"
                 >
                   ¡Descubre más!

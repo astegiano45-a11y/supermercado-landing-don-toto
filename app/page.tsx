@@ -3,13 +3,19 @@ import SiteHeader from "@/components/SiteHeader";
 import Hero from "@/components/Hero";
 import { CategoryCard, PromoCard } from "@/components/CategoryCard";
 import ProductCard from "@/components/ProductCard";
+import CategoriaCarrusel from "@/components/CategoriaCarrusel";
 import ValuePropsStrip from "@/components/ValuePropsStrip";
 import ImperdiblesSemanales from "@/components/ImperdiblesSemanales";
 import RetiraGratisBanner from "@/components/RetiraGratisBanner";
 import MiClubStrip from "@/components/MiClubStrip";
 import BeneficiosAdicionales from "@/components/BeneficiosAdicionales";
 import { DonTotoLogo } from "@/components/Logo";
-import { categorias, getPrecioDesde, getProducto } from "@/lib/catalogo";
+import {
+  categorias,
+  getPrecioDesde,
+  getProducto,
+  getProductosPorCategoria,
+} from "@/lib/catalogo";
 
 // Curados a mano para la maqueta — combinación de rubros con buena foto,
 // no un cálculo automático, para controlar la variedad visual de la sección.
@@ -90,12 +96,33 @@ export default function Home() {
       {/* IMPERDIBLES SEMANALES — 3 tarjetas de ocasión, estilo Líder */}
       <ImperdiblesSemanales />
 
-      {/* MI CLUB — devolución en puntos pagando con tarjeta propia. Pegada a
-          Imperdibles Semanales para agrupar los banners promocionales
-          arriba de la página, en vez de quedar sola cerca del final. */}
-      <MiClubStrip />
+      {/* CARRUSELES POR CATEGORÍA — un CategoriaCarrusel por rubro, mismo
+          componente que usan las páginas de categoría, con "Ver más" a la
+          categoría correspondiente. */}
+      <section className="px-4 pt-12 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-6xl">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-orange">
+            Explorá
+          </span>
+          <h2 className="mt-1 font-display text-2xl font-extrabold text-brand-navy sm:text-3xl">
+            Lo mejor de cada rubro
+          </h2>
+        </div>
+      </section>
 
-      {/* RETIRA GRATIS — banner corto, franja naranja */}
+      {categorias.map((c) => (
+        <CategoriaCarrusel
+          key={c.slug}
+          titulo={c.nombre}
+          productos={getProductosPorCategoria(c.slug).slice(0, 8)}
+          verMasHref={`/categoria/${c.slug}`}
+        />
+      ))}
+
+      {/* MI CLUB y RETIRA GRATIS — se corren para acá abajo, después de
+          "Lo mejor de cada rubro" y casi al final de la página, en vez de
+          quedar arriba entre las secciones de "descubrir productos". */}
+      <MiClubStrip />
       <RetiraGratisBanner />
 
       {/* BENEFICIOS ADICIONALES — 4 tarjetas de color del programa de fidelidad */}

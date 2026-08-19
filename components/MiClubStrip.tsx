@@ -14,7 +14,7 @@ export default function MiClubStrip() {
             no tiene canal alfa — su margen restante (unos px de buffer del
             recorte) es blanco opaco, y así se funde con la tarjeta en vez
             de generar un recuadro contra el fondo navy de la sección. */}
-        <div className="w-full overflow-hidden rounded-2xl bg-white shadow-card">
+        <div className="w-full overflow-hidden rounded-2xl bg-white shadow-card ring-1 ring-brand-navy/5">
           <Image
             src="/banner-mi-club.png"
             alt="Mi Club Don Toto DA+: pagando con tu tarjeta Don Toto DA+ todos los días, te devolvemos 6% del total de tu compra en Pesos Don Toto DA+"

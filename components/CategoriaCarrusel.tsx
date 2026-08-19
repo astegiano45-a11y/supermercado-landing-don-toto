@@ -4,6 +4,7 @@
 // tal cual (mismo look que "Liquidación del día" en la home), con flechas
 // prev/next que se deshabilitan solas según cuánto queda por scrollear.
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { Producto } from "@/lib/catalogo";
 import ProductCard from "./ProductCard";
 import { ChevronLeftIcon, ChevronRightIcon } from "./icons";
@@ -11,9 +12,16 @@ import { ChevronLeftIcon, ChevronRightIcon } from "./icons";
 export default function CategoriaCarrusel({
   titulo,
   productos,
+  verMasHref,
+  verMasLabel = "Ver más",
 }: {
   titulo: string;
   productos: Producto[];
+  // Opcional — si no se pasa, el header queda igual que hoy (solo título +
+  // flechas). Lo usa la home para linkear cada carrusel a su categoría;
+  // las páginas de categoría no lo necesitan porque ya están ahí.
+  verMasHref?: string;
+  verMasLabel?: string;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [puedeIzq, setPuedeIzq] = useState(false);
@@ -52,25 +60,36 @@ export default function CategoriaCarrusel({
           <h2 className="font-display text-xl font-extrabold text-brand-navy sm:text-2xl">
             {titulo}
           </h2>
-          <div className="hidden gap-2 sm:flex">
-            <button
-              type="button"
-              onClick={() => desplazar(-1)}
-              disabled={!puedeIzq}
-              aria-label="Ver productos anteriores"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-navy/15 text-brand-navy transition hover:bg-brand-cream disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
-            >
-              <ChevronLeftIcon className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => desplazar(1)}
-              disabled={!puedeDer}
-              aria-label="Ver más productos"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-navy/15 text-brand-navy transition hover:bg-brand-cream disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
-            >
-              <ChevronRightIcon className="h-4 w-4" />
-            </button>
+          <div className="flex items-center gap-3 sm:gap-4">
+            {verMasHref && (
+              <Link
+                href={verMasHref}
+                className="flex items-center gap-1 text-xs font-bold uppercase tracking-wide text-brand-navy transition hover:text-brand-orange sm:text-sm"
+              >
+                {verMasLabel}
+                <ChevronRightIcon className="h-3.5 w-3.5" />
+              </Link>
+            )}
+            <div className="hidden gap-2 sm:flex">
+              <button
+                type="button"
+                onClick={() => desplazar(-1)}
+                disabled={!puedeIzq}
+                aria-label="Ver productos anteriores"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-navy/15 text-brand-navy transition hover:bg-brand-cream disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
+              >
+                <ChevronLeftIcon className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => desplazar(1)}
+                disabled={!puedeDer}
+                aria-label="Ver más productos"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-navy/15 text-brand-navy transition hover:bg-brand-cream disabled:cursor-default disabled:opacity-30 disabled:hover:bg-transparent"
+              >
+                <ChevronRightIcon className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
 

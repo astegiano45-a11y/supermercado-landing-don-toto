@@ -159,3 +159,17 @@ export function getPrecioDesde(slug: string): number | undefined {
 export function getProducto(id: string): Producto | undefined {
   return productos.find((p) => p.id === id);
 }
+
+// Buscador por nombre/marca, case-insensitive, sobre todo el catálogo (todas
+// las categorías). Usado por el buscador del header (HeaderSearch), por
+// QuickListModal, y por /tienda para pre-filtrar cuando llega ?q=. Un query
+// vacío/solo espacios no matchea nada — quien llama decide qué mostrar en
+// ese caso (ej. el catálogo completo sin filtrar).
+export function buscarProductos(query: string): Producto[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return [];
+  return productos.filter(
+    (p) =>
+      p.nombre.toLowerCase().includes(q) || p.marca.toLowerCase().includes(q)
+  );
+}

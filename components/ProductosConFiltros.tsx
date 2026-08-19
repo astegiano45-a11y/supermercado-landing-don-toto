@@ -20,8 +20,11 @@ export default function ProductosConFiltros({
     () => Array.from(new Set(productos.map((p) => p.marca))).sort(),
     [productos]
   );
+  // Math.max(...[]) da -Infinity — puede pasar de verdad ahora que una
+  // búsqueda por texto sin resultados puede llegar acá con `productos` vacío.
   const precioMax = useMemo(
-    () => Math.max(...productos.map((p) => p.precio)),
+    () =>
+      productos.length > 0 ? Math.max(...productos.map((p) => p.precio)) : 0,
     [productos]
   );
 

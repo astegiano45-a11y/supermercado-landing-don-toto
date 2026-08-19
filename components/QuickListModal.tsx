@@ -7,7 +7,12 @@
 // con el badge del ícono de carrito en SiteHeader.
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { categorias, productos, CATEGORIA_COLOR_CLASSES } from "@/lib/catalogo";
+import {
+  buscarProductos,
+  categorias,
+  productos,
+  CATEGORIA_COLOR_CLASSES,
+} from "@/lib/catalogo";
 import { useCart } from "@/lib/cart-context";
 import { formatoPeso } from "@/lib/format";
 import {
@@ -45,12 +50,8 @@ export default function QuickListModal() {
   }, [open]);
 
   const productosFiltrados = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return productos;
-    return productos.filter(
-      (p) =>
-        p.nombre.toLowerCase().includes(q) || p.marca.toLowerCase().includes(q)
-    );
+    const q = query.trim();
+    return q ? buscarProductos(q) : productos;
   }, [query]);
 
   const totalPrecio = useMemo(

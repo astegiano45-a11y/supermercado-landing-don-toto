@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { SearchIcon, UserIcon } from "./icons";
+import { UserIcon } from "./icons";
 import { DonTotoLogo } from "./Logo";
 import CartButton from "./CartButton";
 import CategoriesMenu from "./CategoriesMenu";
+import HeaderSearch from "./HeaderSearch";
 import QuickListModal from "./QuickListModal";
 import SucursalBar from "./SucursalBar";
 
@@ -32,10 +33,9 @@ export default function SiteHeader() {
             </div>
           </div>
 
-          {/* buscador — visual, sin lógica de búsqueda real todavía */}
-          <div className="hidden items-center gap-2 rounded-full border border-black/10 bg-brand-cream px-4 py-2.5 text-sm text-brand-dark/50 sm:flex">
-            <SearchIcon className="h-4 w-4 shrink-0 text-brand-dark/40" />
-            <span className="truncate">Buscá carnes, almacén, bebidas…</span>
+          {/* buscador */}
+          <div className="hidden sm:block">
+            <HeaderSearch />
           </div>
 
           <div className="flex shrink-0 items-center gap-1.5 sm:justify-self-end sm:gap-2">
@@ -55,9 +55,8 @@ export default function SiteHeader() {
             En sm: en adelante cada uno vuelve a su lugar de arriba. */}
         <div className="flex items-center gap-2 sm:hidden">
           <CategoriesMenu />
-          <div className="flex min-w-0 flex-1 items-center gap-2 rounded-full border border-black/10 bg-brand-cream px-4 py-2.5 text-sm text-brand-dark/50">
-            <SearchIcon className="h-4 w-4 shrink-0 text-brand-dark/40" />
-            <span className="truncate">Buscá carnes, almacén, bebidas…</span>
+          <div className="min-w-0 flex-1">
+            <HeaderSearch />
           </div>
         </div>
       </div>

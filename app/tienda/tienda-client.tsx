@@ -1,25 +1,41 @@
 "use client";
 
-// Orquesta /tienda: filtro de categoría (dimensión propia de esta página)
-// por encima del mismo ProductosConFiltros que ya usa la CLP. Mismo patrón
-// que categoria-explorer.tsx — pre-filtra `productos` por categoría activa
-// y remonta con `key` para resetear marca/precio al cambiar de categoría.
+// Orquesta /tienda: filtro de categoría + búsqueda por texto (?q=, dos
+// dimensiones propias de esta página) por encima del mismo
+// ProductosConFiltros que ya usa la CLP. Mismo patrón que
+// categoria-explorer.tsx — pre-filtra `productos` antes de pasarlo, y se
+// remonta entero desde page.tsx (key={query}) cada vez que cambia la
+// búsqueda, así categoría y marca/precio arrancan de cero en el contexto
+// nuevo en vez de quedar pisados con valores de la búsqueda anterior.
 import { useMemo, useState } from "react";
-import type { Producto } from "@/lib/catalogo";
+import { buscarProductos, type Producto } from "@/lib/catalogo";
 import CategoriaChips from "@/components/CategoriaChips";
 import ProductosConFiltros from "@/components/ProductosConFiltros";
 
-export default function TiendaClient({ productos }: { productos: Producto[] }) {
+export default function TiendaClient({
+  productos,
+  query,
+}: {
+  productos: Producto[];
+  query?: string;
+}) {
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState<
     string | null
   >(null);
 
+  const productosDeLaBusqueda = useMemo(
+    () => (query ? buscarProductos(query) : productos),
+    [productos, query]
+  );
+
   const productosVisibles = useMemo(
     () =>
       categoriaSeleccionada
-        ? productos.filter((p) => p.categoria === categoriaSeleccionada)
-        : productos,
-    [productos, categoriaSeleccionada]
+        ? productosDeLaBusqueda.filter(
+            (p) => p.categoria === categoriaSeleccionada
+          )
+        : productosDeLaBusqueda,
+    [productosDeLaBusqueda, categoriaSeleccionada]
   );
 
   return (

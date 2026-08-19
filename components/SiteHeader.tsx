@@ -38,9 +38,9 @@ export default function SiteHeader() {
             <button
               type="button"
               aria-label="Mi cuenta"
-              className="flex h-10 w-10 items-center justify-center rounded-full text-brand-navy transition hover:bg-brand-cream active:scale-95"
+              className="flex h-12 w-12 items-center justify-center rounded-full text-brand-navy transition hover:bg-brand-cream active:scale-95"
             >
-              <UserIcon className="h-5 w-5" />
+              <UserIcon className="h-6 w-6" />
             </button>
             <CartButton />
           </div>
